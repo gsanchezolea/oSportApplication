@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,28 +11,22 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    [Authorize(Roles = "Coach")]
-    public class CoachesController : Controller
+    public class TeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CoachesController(ApplicationDbContext context)
+        public TeamsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Coaches
+        // GET: Teams
         public async Task<IActionResult> Index()
         {
-            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _context.Coaches.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
-
-            var listOfTeams = await _context.CoachTeams.Include(a => a.Team).Where(a => a.CoachId == user.Id).ToListAsync();
-            ViewBag.Teams = listOfTeams;
-            return View(user);
+            return View(await _context.Teams.ToListAsync());
         }
 
-        // GET: Coaches/Details/5
+        // GET: Teams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,44 +34,52 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coaches
-                .Include(c => c.IdentityUser)
+            var team = await _context.Teams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (coach == null)
+            if (team == null)
             {
                 return NotFound();
             }
 
-            return View(coach);
+            return View(team);
         }
 
-        // GET: Coaches/Create
+        // GET: Teams/Create
         public IActionResult Create()
         {
-            var coach = new Coach();
-            return View(coach);
+            var team = new Team();
+            return View(team);
         }
 
-        // POST: Coaches/Create
+        // POST: Teams/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Coach coach)
+        public async Task<IActionResult> Create(Team team)
         {
             if (ModelState.IsValid)
             {
-                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                coach.IdentityUserId = identityUserId;
-                _context.Add(coach);
+                _context.Add(team);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var dbTeam = await _context.Teams.SingleOrDefaultAsync(a => a.Name == team.Name);
+                var dbTeamId = dbTeam.Id;
+                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var coach = await _context.Coaches.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+                var coachId = coach.Id;
+                var coachTeam = new CoachTeam()
+                {
+                    CoachId = coachId,
+                    TeamId = coachId,
+                };
+                _context.Add(coachTeam);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Coaches");
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", coach.IdentityUserId);
-            return View(coach);
+            return View(team);
         }
 
-        // GET: Coaches/Edit/5
+        // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,23 +87,22 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coaches.FindAsync(id);
-            if (coach == null)
+            var team = await _context.Teams.FindAsync(id);
+            if (team == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", coach.IdentityUserId);
-            return View(coach);
+            return View(team);
         }
 
-        // POST: Coaches/Edit/5
+        // POST: Teams/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Coach coach)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Capacity,AccountStatus")] Team team)
         {
-            if (id != coach.Id)
+            if (id != team.Id)
             {
                 return NotFound();
             }
@@ -111,12 +111,12 @@ namespace oSportApp.Controllers
             {
                 try
                 {
-                    _context.Update(coach);
+                    _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CoachExists(coach.Id))
+                    if (!TeamExists(team.Id))
                     {
                         return NotFound();
                     }
@@ -127,11 +127,10 @@ namespace oSportApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", coach.IdentityUserId);
-            return View(coach);
+            return View(team);
         }
 
-        // GET: Coaches/Delete/5
+        // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,31 +138,30 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coaches
-                .Include(c => c.IdentityUser)
+            var team = await _context.Teams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (coach == null)
+            if (team == null)
             {
                 return NotFound();
             }
 
-            return View(coach);
+            return View(team);
         }
 
-        // POST: Coaches/Delete/5
+        // POST: Teams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var coach = await _context.Coaches.FindAsync(id);
-            _context.Coaches.Remove(coach);
+            var team = await _context.Teams.FindAsync(id);
+            _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CoachExists(int id)
+        private bool TeamExists(int id)
         {
-            return _context.Coaches.Any(e => e.Id == id);
+            return _context.Teams.Any(e => e.Id == id);
         }
     }
 }

@@ -22,22 +22,22 @@ namespace oSportApp.Data
             new IdentityRole
             {
                 Name = "Owner",
-                NormalizedName = "OWNER"
+                NormalizedName = "OWNER",
             },
             new IdentityRole
             {
                 Name = "Coach",
-                NormalizedName = "COACH"
+                NormalizedName = "COACH",
             },
             new IdentityRole
             {
                 Name = "Referee",
-                NormalizedName = "REFEREE"
+                NormalizedName = "REFEREE",
             },
             new IdentityRole
             {
                 Name = "Player",
-                NormalizedName = "PLAYER"
+                NormalizedName = "PLAYER",
             }
             );
             builder.Entity<Sport>()
@@ -45,17 +45,17 @@ namespace oSportApp.Data
                 new Sport
                 {
                     Id  = 1,
-                    Name = "Soccer"
+                    Name = "Soccer",
                 },
                 new Sport
                 {
                     Id = 2,
-                    Name = "Football"
+                    Name = "Football",
                 },
                 new Sport
                 {
                     Id = 3,
-                    Name = "Basketball"
+                    Name = "Basketball",
                 }
                 );
         }

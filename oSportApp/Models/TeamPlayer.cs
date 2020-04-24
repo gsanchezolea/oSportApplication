@@ -19,5 +19,7 @@ namespace oSportApp.Models
         [ForeignKey("Player")]
         public int PlayerId { get; set; }
         public Player Player { get; set; }
+
+        public bool Approved { get; set; }
     }
 }

@@ -20,5 +20,7 @@ namespace oSportApp.Models
         public int RefereeId { get; set; }
         public Referee Referee { get; set; }
 
+        public bool Approved { get; set; }
+
     }
 }

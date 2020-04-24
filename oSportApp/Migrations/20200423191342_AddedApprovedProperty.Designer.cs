@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using oSportApp.Data;
 
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200423191342_AddedApprovedProperty")]
+    partial class AddedApprovedProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,29 +50,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e1a0b3fb-37c3-46c6-bf8e-f799139d41ce",
-                            ConcurrencyStamp = "a492fb82-e034-4179-af43-31c1feeb6e64",
+                            Id = "759b22fa-b1f9-4870-81a5-cf1388277277",
+                            ConcurrencyStamp = "3d296a3d-a86d-4019-acab-0852d1460b82",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "43460b72-08ad-4f64-aeef-1b10103674e1",
-                            ConcurrencyStamp = "953d10e4-4ff6-4e4d-a388-20768aa235a5",
+                            Id = "d7f925a4-fd90-4998-9176-261db18ab40d",
+                            ConcurrencyStamp = "b1c33d98-15a5-42f7-a5e8-28bd4e2bb1a9",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "710f257e-5a79-4a8c-aad4-3211a473894f",
-                            ConcurrencyStamp = "e6117d78-d74d-46af-851a-a3c418872517",
+                            Id = "d6868399-c146-47a0-83be-87493794a806",
+                            ConcurrencyStamp = "6d4c0a8d-8a01-4ace-9027-806e1fdfa87d",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "34bba5f5-0cfe-471f-b542-5b3255d6e911",
-                            ConcurrencyStamp = "30d852c9-a859-409d-a7f3-516f5f4a3ef9",
+                            Id = "096f4ed2-4e03-4cdc-a783-5ba92852cc57",
+                            ConcurrencyStamp = "c8caec25-9233-4e38-acc1-63305a56eb4c",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });
@@ -651,9 +653,6 @@ namespace oSportApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,12 @@ namespace oSportApp.Controllers
         // GET: Owners
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Owners.Include(o => o.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _context.Owners.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+
+            var listOfLeagues = await _context.OwnerLeagues.Include(a => a.League).ThenInclude(a => a.Sport).Where(a => a.OwnerId == user.Id).ToListAsync();
+            ViewBag.Leagues = listOfLeagues;
+            return View(user);
         }
 
         // GET: Owners/Details/5
@@ -50,8 +55,9 @@ namespace oSportApp.Controllers
         // GET: Owners/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var owner = new Owner();
+
+            return View(owner);
         }
 
         // POST: Owners/Create
@@ -59,10 +65,12 @@ namespace oSportApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber")] Owner owner)
+        public async Task<IActionResult> Create(Owner owner)
         {
             if (ModelState.IsValid)
             {
+                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                owner.IdentityUserId = identityUserId;
                 _context.Add(owner);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

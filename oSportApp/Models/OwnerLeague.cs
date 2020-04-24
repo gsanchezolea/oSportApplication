@@ -19,5 +19,6 @@ namespace oSportApp.Models
         [ForeignKey("League")]
         public int LeagueId { get; set; }
         public League League { get; set; }
+
     }
 }
