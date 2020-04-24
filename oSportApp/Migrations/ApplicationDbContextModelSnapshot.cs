@@ -48,29 +48,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1dfed547-03c7-4889-9928-86cbe147873c",
-                            ConcurrencyStamp = "12ec8ca1-ac53-44ee-9336-f1e12f3b4dab",
+                            Id = "b7f9950d-693b-460e-8847-c01b27f127d4",
+                            ConcurrencyStamp = "2082cb6a-e3f0-4769-a7ef-164d9b639267",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "4c7e177d-53e4-40f1-8f40-049c2a1260d3",
-                            ConcurrencyStamp = "9c0262c4-ffc0-43f4-ba2d-3ad01da6d549",
+                            Id = "6ef6ab44-c9fd-48ec-8a7f-f2f89ec1cc4d",
+                            ConcurrencyStamp = "10f7996d-360b-4045-984c-be21721f676f",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "738e8217-c639-4df5-9d66-48b3fed9c438",
-                            ConcurrencyStamp = "2ad95f82-8ea6-448a-b20f-c7006caaef67",
+                            Id = "7b0c2b8e-db80-49c8-b02c-5669e5861635",
+                            ConcurrencyStamp = "dcfbbc31-3b65-476d-ab80-660118dae212",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "b274ccdf-6418-43d4-a2e2-37fba99da4db",
-                            ConcurrencyStamp = "43fa5c2a-b646-4e7b-91aa-329285ad175d",
+                            Id = "a6b8c2d1-7f92-4723-bc9d-3ef451f98470",
+                            ConcurrencyStamp = "ddb6c341-fd73-43c5-8072-9a9d82a21ca6",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });

@@ -10,7 +10,7 @@ using oSportApp.Data;
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200423025505_Init")]
+    [Migration("20200424181214_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,29 +50,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e8a68b9d-70f7-49f6-b6c0-e3f892c77759",
-                            ConcurrencyStamp = "fce05578-7bd8-4d99-98d8-9fcb2254f302",
+                            Id = "b7f9950d-693b-460e-8847-c01b27f127d4",
+                            ConcurrencyStamp = "2082cb6a-e3f0-4769-a7ef-164d9b639267",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "29a49f83-cf84-422f-9ecc-0b71bc4027b4",
-                            ConcurrencyStamp = "2e051160-ebe5-48ad-817c-7f87d2f4cb5c",
+                            Id = "6ef6ab44-c9fd-48ec-8a7f-f2f89ec1cc4d",
+                            ConcurrencyStamp = "10f7996d-360b-4045-984c-be21721f676f",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "c6d45551-e29f-4bdf-a630-2f7e21a2120b",
-                            ConcurrencyStamp = "82ff51e5-91c9-42dd-931a-cbfe28804a78",
+                            Id = "7b0c2b8e-db80-49c8-b02c-5669e5861635",
+                            ConcurrencyStamp = "dcfbbc31-3b65-476d-ab80-660118dae212",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "189dbaf2-374b-4b10-8be4-6deb149c8622",
-                            ConcurrencyStamp = "7b7f465e-9b3b-442d-9e01-f3b1c0c73cc3",
+                            Id = "a6b8c2d1-7f92-4723-bc9d-3ef451f98470",
+                            ConcurrencyStamp = "ddb6c341-fd73-43c5-8072-9a9d82a21ca6",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });
@@ -385,6 +385,9 @@ namespace oSportApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
@@ -406,6 +409,9 @@ namespace oSportApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
@@ -537,8 +543,14 @@ namespace oSportApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Goals")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("KitNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -548,11 +560,126 @@ namespace oSportApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdentityUserId");
 
+                    b.HasIndex("PositionId");
+
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("oSportApp.Models.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abbreviation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Abbreviation = "GK",
+                            Name = "Goalkeeper"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Abbreviation = "RB",
+                            Name = "Right Fullback"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Abbreviation = "LB",
+                            Name = "Left Fullback"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Abbreviation = "CB",
+                            Name = "Center Back"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Abbreviation = "SW",
+                            Name = "Sweeper"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Abbreviation = "DM",
+                            Name = "Defending/Holding Midfielder"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Abbreviation = "RM",
+                            Name = "Right Midfielder/Winger"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Abbreviation = "CM",
+                            Name = "Central/Box-to-Box Midfielder"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Abbreviation = "S",
+                            Name = "Striker"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Abbreviation = "AM",
+                            Name = "Attacking Midfielder/Playmaker"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Abbreviation = "LM",
+                            Name = "Left Midfielder/Wingers"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Abbreviation = "CF",
+                            Name = "Center Forward"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Abbreviation = "SS",
+                            Name = "Second Striker"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Abbreviation = "LWB",
+                            Name = "Left Wingback"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Abbreviation = "RWB",
+                            Name = "Right Wingback"
+                        });
                 });
 
             modelBuilder.Entity("oSportApp.Models.Referee", b =>
@@ -647,6 +774,9 @@ namespace oSportApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -832,6 +962,12 @@ namespace oSportApp.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("oSportApp.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("oSportApp.Models.Referee", b =>

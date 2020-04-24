@@ -5,11 +5,6 @@
     <UserSecretsId>aspnet-oSportApp-9C0B8FD0-4E5C-4B2E-A1B1-B6E892E0497E</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20200424180239_AddedPositionModel.cs" />
-    <Compile Remove="Migrations\20200424180239_AddedPositionModel.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />

@@ -42,7 +42,7 @@
                             @item.League.Sport.Name
                         </td>
                         <td>
-                            <button type="button" onclick="location.href='@Url.Action("Index","OwnerLeagues", new { id = item.Id})'" class="btn btn-primary">Dashboard</button>
+                            <button type="button" onclick="location.href='@Url.Action("Dashboard","Owners", new { id = item.Id})'" class="btn btn-primary">Dashboard</button>
                         </td>       
                     </tr>
                 }
