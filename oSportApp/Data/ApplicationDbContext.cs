@@ -44,7 +44,7 @@ namespace oSportApp.Data
                 .HasData(
                 new Sport
                 {
-                    Id  = 1,
+                    Id = 1,
                     Name = "Soccer",
                 },
                 new Sport
@@ -58,6 +58,100 @@ namespace oSportApp.Data
                     Name = "Basketball",
                 }
                 );
+            builder.Entity<Position>()
+                .HasData(
+                new Position
+                {
+                    Id = 1,
+                    Name = "Goalkeeper", 
+                    Abbreviation = "GK",
+                },
+                new Position
+                {
+                    Id = 2,
+                    Name = "Right Fullback",
+                    Abbreviation = "RB",
+                },
+                new Position
+                {
+                    Id = 3,
+                    Name = "Left Fullback",
+                    Abbreviation = "LB",
+                },
+                new Position
+                {
+                    Id = 4,
+                    Name = "Center Back",
+                    Abbreviation = "CB",
+                },
+                new Position
+                {
+                    Id = 5,
+                    Name = "Sweeper", 
+                    Abbreviation = "SW",
+                },
+                new Position
+                {
+                    Id = 6,
+                    Name = "Defending/Holding Midfielder",
+                    Abbreviation = "DM",
+                },
+                new Position
+                {
+                    Id = 7,
+                    Name = "Right Midfielder/Winger",
+                    Abbreviation = "RM",
+                },
+                new Position
+                {
+                    Id = 8,
+                    Name = "Central/Box-to-Box Midfielder",
+                    Abbreviation = "CM",
+                },
+                new Position
+                {
+                    Id = 9,
+                    Name = "Striker", 
+                    Abbreviation = "S",
+                },
+                new Position
+                {
+                    Id = 10,
+                    Name = "Attacking Midfielder/Playmaker", 
+                    Abbreviation = "AM",
+                },
+                new Position
+                {
+                    Id = 11,
+                    Name = "Left Midfielder/Wingers",
+                    Abbreviation = "LM",
+                },
+                new Position
+                {
+                    Id = 12, 
+                    Name = "Center Forward",
+                    Abbreviation = "CF",
+                },
+                new Position
+                {
+                    Id = 13,
+                    Name = "Second Striker",
+                    Abbreviation = "SS",
+                },
+                new Position
+                {
+                    Id = 14,
+                    Name = "Left Wingback", 
+                    Abbreviation = "LWB",
+                },
+                new Position
+                {
+                    Id = 15, 
+                    Name = "Right Wingback", 
+                    Abbreviation = "RWB",
+                }
+                );
+
         }
 
         public DbSet<Owner> Owners { get; set; }
@@ -75,5 +169,6 @@ namespace oSportApp.Data
         public DbSet<Field> Fields { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<LeagueMatch> LeagueMatches { get; set; }
+        public DbSet<Position> Positions { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,9 @@ namespace oSportApp.Controllers
         // GET: Referees
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Referees.Include(r => r.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var referee = await _context.Referees.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+            return View(referee);
         }
 
         // GET: Referees/Details/5
@@ -50,8 +52,8 @@ namespace oSportApp.Controllers
         // GET: Referees/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var referee = new Referee();
+            return View(referee);
         }
 
         // POST: Referees/Create
@@ -59,10 +61,12 @@ namespace oSportApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Referee referee)
+        public async Task<IActionResult> Create(Referee referee)
         {
             if (ModelState.IsValid)
             {
+                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                referee.IdentityUserId = identityUserId;
                 _context.Add(referee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

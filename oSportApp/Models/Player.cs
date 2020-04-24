@@ -17,6 +17,10 @@ namespace oSportApp.Models
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
 
+        [ForeignKey("Position")]
+        public int PositionId { get; set; }
+        public Position Position { get; set; }
+
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -34,5 +38,11 @@ namespace oSportApp.Models
 
         [Display(Name = "Account Status")]
         public bool AccountStatus { get; set; }
+
+        public int Goals { get; set; }
+
+        [Required]
+        [Display(Name = "Kit #")]
+        public int KitNumber { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace oSportApp.Controllers
         // GET: CoachTeams
         public async Task<IActionResult> Index(int id)
         {
-            var team = await _context.CoachTeams.Include(a => a.Team).SingleOrDefaultAsync(a => a.CoachId == id);
+            var team = await _context.CoachTeams.Include(a => a.Team).SingleOrDefaultAsync(a => a.Id == id);
 
             //Approved Players
             var approvedPlayers = await _context.TeamPlayers

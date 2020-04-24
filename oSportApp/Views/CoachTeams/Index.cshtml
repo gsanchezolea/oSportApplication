@@ -35,14 +35,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ViewBag.ApprovedTeams)
+                        @foreach (var item in ViewBag.ApprovedPlayers)
                         {
                             <tr>
                                 <td>
-                                    @item.Team.Name
-                                </td>
-                                <td>
-                                    @item.Team.Capacity
+                                    @item.Player.FirstName @item.Player.LastName
                                 </td>
                                 <td>
                                     @item.Approved
@@ -55,16 +52,13 @@
             </div>
         </div>
         <div class="row">
-            <h4>Team's Pending Approval</h4>
+            <h4>Player's Pending Approval</h4>
             <div class="col-lg-12">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
-                                Team
-                            </th>
-                            <th>
-                                Capacity
+                                Player Name
                             </th>
                             <th>
                                 Approved?
@@ -73,114 +67,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ViewBag.PendingTeams)
+                        @foreach (var item in ViewBag.PendingPlayers)
                         {
-                            <tr>
-                                <td>
-                                    @item.Team.Name
-                                </td>
-                                <td>
-                                    @item.Team.Capacity
-                                </td>
-                                <td>
-                                    @item.Approved
-                                </td>
-                                <td></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <h4>Approved Referees</h4>
-            <div class="col-lg-12">
-                <table class="table">
-                    <thead>
                         <tr>
-                            <th>
-                                Full Name
-                            </th>
-                            <th>
-                                Approved?
-                            </th>
-                            <th></th>
+                            <td>
+                                @item.Player.FirstName @item.Player.LastName
+                            </td>
+                            <td>
+                                @item.Approved
+                            </td>
+                            <td></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.ApprovedReferees)
-                        {
-                            <tr>
-                                <td>
-                                    @item.Referee.FirstName @item.Referee.LastName
-                                </td>
-                                <td>
-                                    @item.Approved
-                                </td>
-                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="row">
-            <h4>Referee's Pending Approval</h4>
-            <div class="col-lg-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Full Name
-                            </th>
-                            <th>
-                                Approved?
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.PendingReferees)
-                        {
-                            <tr>
-                                <td>
-                                    @item.Referee.FirstName @item.Referee.LastName
-                                </td>
-                                <td>
-                                    @item.Approved
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-5">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Home Team
-                    </th>
-                    <th></th>
-                    <th>
-                        Away Team
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ViewBag.Matches)
-                {
-                    <tr>
-                        <td>
-                            @item.Match.HomeTeam.Name
-                        </td>
-                        <td>
-                            @item.Match.AwayTeam.Name
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,9 @@ namespace oSportApp.Controllers
         // GET: Players
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Players.Include(p => p.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var player = await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+            return View(player);
         }
 
         // GET: Players/Details/5
@@ -50,8 +52,8 @@ namespace oSportApp.Controllers
         // GET: Players/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var player = new Player();
+            return View(player);
         }
 
         // POST: Players/Create
@@ -59,10 +61,12 @@ namespace oSportApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Player player)
+        public async Task<IActionResult> Create(Player player)
         {
             if (ModelState.IsValid)
             {
+                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                player.IdentityUserId = identityUserId;
                 _context.Add(player);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
