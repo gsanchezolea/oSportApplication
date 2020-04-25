@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
+    
     public class CoachTeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,26 +22,11 @@ namespace oSportApp.Controllers
         }
 
         // GET: CoachTeams
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index( )
         {
-            var team = await _context.CoachTeams.Include(a => a.Team).SingleOrDefaultAsync(a => a.Id == id);
-
-            //Approved Players
-            var approvedPlayers = await _context.TeamPlayers
-                .Include(a => a.Player)
-                .Where(a => a.TeamId == team.Id && a.Approved == true)
-                .ToListAsync();
-            ViewBag.ApprovedPlayers = approvedPlayers;
-
-            //Pending Approval
-            var pendingPlayers = await _context.TeamPlayers
-              .Include(a => a.Player)
-              .Where(a => a.TeamId == team.Id && a.Approved == false)
-              .ToListAsync();
-            ViewBag.PendingPlayers = pendingPlayers;
-
+           
             //
-            return View(team);
+            return View();
         }
 
         // GET: CoachTeams/Details/5

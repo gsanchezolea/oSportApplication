@@ -12,7 +12,7 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    [Authorize(Roles = "Referee")]
+    
     public class RefereesController : Controller
     {
         private readonly ApplicationDbContext _context;

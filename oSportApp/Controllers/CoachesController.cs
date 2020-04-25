@@ -12,7 +12,7 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    [Authorize(Roles = "Coach")]
+   
     public class CoachesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -164,6 +164,28 @@ namespace oSportApp.Controllers
         private bool CoachExists(int id)
         {
             return _context.Coaches.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> Dashboard(int id)
+        {
+            var team = await _context.CoachTeams.Include(a => a.Team).SingleOrDefaultAsync(a => a.Id == id);
+
+            //Approved Players
+            var approvedPlayers = await _context.TeamPlayers
+                .Include(a => a.Player)
+                .Where(a => a.CoachTeamId == team.Id && a.Approved == true)
+                .ToListAsync();
+            ViewBag.ApprovedPlayers = approvedPlayers;
+
+            //Pending Approval
+            var pendingPlayers = await _context.TeamPlayers
+              .Include(a => a.Player)
+              .Where(a => a.CoachTeamId == team.Id && a.Approved == false)
+              .ToListAsync();
+            ViewBag.PendingPlayers = pendingPlayers;
+
+            //
+            return View(team);
         }
     }
 }

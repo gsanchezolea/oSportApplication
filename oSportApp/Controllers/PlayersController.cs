@@ -12,7 +12,7 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    [Authorize(Roles = "Player")]
+   
     public class PlayersController : Controller
     {
         private readonly ApplicationDbContext _context;

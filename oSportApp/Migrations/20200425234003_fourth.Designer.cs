@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using oSportApp.Data;
 
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200425234003_fourth")]
+    partial class fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,29 +50,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dc9f9965-1ba7-42d4-8c39-e17d67b47835",
-                            ConcurrencyStamp = "c9cb38f2-7d6d-4a74-86b7-67ea7dfbd10a",
+                            Id = "d59e477f-85b9-422a-8d93-5df3510bb095",
+                            ConcurrencyStamp = "8d3d6e5c-ef14-40b4-9401-e1b22690497f",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "e8bd235a-9e2e-495d-ad67-6ca1967f489a",
-                            ConcurrencyStamp = "be94791f-69f4-4476-9298-9ce395aeb448",
+                            Id = "581299d0-7b8a-4b2e-ab8d-6e7059a687a5",
+                            ConcurrencyStamp = "74c77447-6fdd-4770-ac89-3236997c42c4",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "f930d95e-6cb7-4d80-a994-321ebebd0004",
-                            ConcurrencyStamp = "5264c470-0fca-4edc-8a1d-354c4dc625ca",
+                            Id = "201ac70f-7a68-4c15-88be-1bc89bf904d0",
+                            ConcurrencyStamp = "2d75c8b2-ae0a-4ab0-9937-71dbe5b556c1",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "456bc9d1-2c43-4c0d-9085-df1abd49cd23",
-                            ConcurrencyStamp = "f6b55382-0259-4b2d-b8c9-0d1401bf0dfc",
+                            Id = "7cec4275-cb3a-4403-a56b-152ae431673e",
+                            ConcurrencyStamp = "1bd125ef-5b6f-4f12-bf54-41185d301ef2",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });

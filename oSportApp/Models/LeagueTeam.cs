@@ -12,13 +12,13 @@ namespace oSportApp.Models
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("League")]
-        public int LeagueId { get; set; }
-        public OwnerLeague League { get; set; }
+        [ForeignKey("OwnerLeague")]
+        public int OwnerLeagueId { get; set; }
+        public OwnerLeague OwnerLeague { get; set; }
 
-        [ForeignKey("Team")]
-        public int TeamId { get; set; }
-        public CoachTeam Team { get; set; }
+        [ForeignKey("CoachTeam")]
+        public int CoachTeamId { get; set; }
+        public CoachTeam CoachTeam { get; set; }
 
         public bool Approved { get; set; }
     }

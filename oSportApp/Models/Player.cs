@@ -16,10 +16,7 @@ namespace oSportApp.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-
-        [ForeignKey("Position")]
-        public int PositionId { get; set; }
-        public Position Position { get; set; }
+        
 
         [Required]
         [Display(Name = "First Name")]
@@ -34,15 +31,8 @@ namespace oSportApp.Models
         [Required(ErrorMessage = "Phone Number Required!")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
                    ErrorMessage = "Entered phone format is not valid.")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }        
 
-        [Display(Name = "Account Status")]
-        public bool AccountStatus { get; set; }
-
-        public int Goals { get; set; }
-
-        [Required]
-        [Display(Name = "Kit #")]
-        public int KitNumber { get; set; }
+       
     }
 }

@@ -36,7 +36,7 @@
                             @item.Team.Name
                         </td>
                         <td>
-                            <button type="button" onclick="location.href='@Url.Action("Index","CoachTeams", new { id = item.Id})'" class="btn btn-primary">Dashboard</button>
+                            <button type="button" onclick="location.href='@Url.Action("Dashboard","Coaches", new { id = item.Id})'" class="btn btn-primary">Dashboard</button>
                         </td>
                     </tr>
                 }

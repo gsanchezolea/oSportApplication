@@ -32,7 +32,6 @@ namespace oSportApp.Models
                    ErrorMessage = "Entered phone format is not valid.")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "Account Status")]
-        public bool AccountStatus { get; set; }
+       
     }
 }

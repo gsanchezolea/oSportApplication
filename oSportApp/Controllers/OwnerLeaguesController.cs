@@ -20,46 +20,11 @@ namespace oSportApp.Controllers
         }
 
         // GET: OwnerLeagues
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
-            var league = await _context.OwnerLeagues.Include(a => a.League).SingleOrDefaultAsync(a => a.Id == id);
+            
 
-            //Approved Teams
-            var approvedTeams = await _context.LeagueTeams
-                .Include(a => a.Team)
-                .Where(a => a.LeagueId == league.Id && a.Approved == true)
-                .ToListAsync();
-            ViewBag.ApprovedTeams = approvedTeams;
-
-            //Pending Approval
-            var pendingTeams = await _context.LeagueTeams
-                .Include(a => a.Team)
-                .Where(a => a.LeagueId == league.Id && a.Approved == false)
-                .ToListAsync();
-            ViewBag.PendingTeams = pendingTeams;
-
-            //Approved Referees
-            var approvedReferees = await _context.LeagueReferees
-                .Include(a => a.Referee)
-                .Where(a => a.LeagueId == league.Id && a.Approved ==  true)
-                .ToListAsync();
-            ViewBag.ApprovedReferees = approvedReferees;
-
-            //Pending Approval
-            var pendingReferees = await _context.LeagueReferees
-                .Include(a => a.Referee)
-                .Where(a => a.LeagueId == league.Id && a.Approved == false)
-                .ToListAsync();
-            ViewBag.PendingReferees = pendingReferees;
-
-            //Matches
-            var matches = await _context.LeagueMatches
-                .Include(a => a.Match)
-                .Where(a => a.LeagueId == league.Id)
-                .ToListAsync();
-            ViewBag.Matches = matches;
-
-            return View(league);
+            return View();
         }
 
         // GET: OwnerLeagues/Details/5
