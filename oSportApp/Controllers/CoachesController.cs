@@ -12,7 +12,8 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-   
+    [Authorize(Roles = "Coach")]
+
     public class CoachesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -173,14 +174,14 @@ namespace oSportApp.Controllers
             //Approved Players
             var approvedPlayers = await _context.TeamPlayers
                 .Include(a => a.Player)
-                .Where(a => a.CoachTeamId == team.Id && a.Approved == true)
+                .Where(a => (a.CoachTeamId == team.Id) && (a.Approved == true))
                 .ToListAsync();
             ViewBag.ApprovedPlayers = approvedPlayers;
 
             //Pending Approval
             var pendingPlayers = await _context.TeamPlayers
               .Include(a => a.Player)
-              .Where(a => a.CoachTeamId == team.Id && a.Approved == false)
+              .Where(a => (a.CoachTeamId == team.Id) && (a.Approved == false))
               .ToListAsync();
             ViewBag.PendingPlayers = pendingPlayers;
 

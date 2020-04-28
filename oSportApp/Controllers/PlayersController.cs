@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -12,7 +13,8 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-   
+    [Authorize(Roles = "Player")]
+
     public class PlayersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,8 +27,19 @@ namespace oSportApp.Controllers
         // GET: Players
         public async Task<IActionResult> Index()
         {
-            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var player = await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+            var identityUserId = this.User
+                .FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var player = await _context.Players
+                .SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+
+            var listOfTeams = await _context.TeamPlayers
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => a.PlayerId == player.Id && a.Approved == true)
+                .ToListAsync();
+
+            ViewBag.Teams = listOfTeams;
             return View(player);
         }
 
@@ -162,5 +175,34 @@ namespace oSportApp.Controllers
         {
             return _context.Players.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> Dashboard(int id) //team player id
+        {
+
+            var identityUserId = this.User
+                .FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var player = await _context.Players
+                .SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+
+            var teamPlayer = await _context.TeamPlayers
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Coach)
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Include(a => a.Player)
+                .Include(a => a.Position)
+                .Where(a => a.Id == id).SingleOrDefaultAsync(a => a.PlayerId == player.Id);
+
+            var listOfPlayers = await _context.TeamPlayers
+                .Include(a => a.Player)
+                .Where(a => (a.Id == id) && (a.Approved == true))
+                .ToListAsync();
+
+            ViewBag.Players = listOfPlayers;
+            return View(teamPlayer);
+        }
+
+
     }
 }

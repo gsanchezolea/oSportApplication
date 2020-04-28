@@ -5,18 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Join</h1>
+<h1>Create</h1>
 
-<h4>League</h4>
+<h4>LeagueTeam</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CoachTeamId" />
             <div class="form-group">
-                <label asp-for="OwnerLeague.League.Name"></label>
-                <select asp-for="OwnerLeagueId" class="form-control" asp-items="ViewBag.Leagues"></select>
+                <label asp-for="OwnerLeague"></label>
+                <select asp-for="OwnerLeagueId" class="form-control" asp-items="@ViewBag.Leagues"></select>
+                <span asp-validation-for="OwnerLeagueId" class="text-danger"></span>
+            </div>
+            <div class="row">
+
+                @Html.HiddenFor(model => model.CoachTeamId)
+                <input type="hidden" id="CoachTeamId" name="CoachTeamId" value="@Model.CoachTeamId" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -28,5 +33,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 

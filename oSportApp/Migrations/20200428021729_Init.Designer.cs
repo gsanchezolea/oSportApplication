@@ -10,7 +10,7 @@ using oSportApp.Data;
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200425231105_Init")]
+    [Migration("20200428021729_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,29 +50,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ce83c51c-c0c5-45a7-a242-31f04b084cba",
-                            ConcurrencyStamp = "2ae1b69b-6768-4843-93eb-06e00359c74a",
+                            Id = "cb5d8bce-9146-42bc-ba68-3b9fbd850334",
+                            ConcurrencyStamp = "e6818dce-0dad-4f69-9d66-d8da7faf4eaa",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "22b9f485-1291-48a5-b23a-fb21296f186e",
-                            ConcurrencyStamp = "6e3d5d38-7175-4e69-a0e6-fcbe0faa3777",
+                            Id = "674c50b2-6916-4b7e-9d1b-c6d8fb5e62ab",
+                            ConcurrencyStamp = "b6bf18f5-f343-4ec5-871c-ee6b24c36d76",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "a1ce91f9-4d13-46f6-9a27-de3549559483",
-                            ConcurrencyStamp = "8d8ac083-bd09-4e2f-a35f-1cb504a1bf72",
+                            Id = "a41612e9-406b-4d5b-9157-4fa50b7e6a4f",
+                            ConcurrencyStamp = "0746728e-bfc7-49cf-ac07-412b050cf3c9",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "0a3bee17-2963-4f39-b2a8-9b8aabd8a936",
-                            ConcurrencyStamp = "6735c30d-f96d-43bd-9855-393fea387ea8",
+                            Id = "d65b81dd-c2c0-4015-b576-e6b923e43f9d",
+                            ConcurrencyStamp = "d6b5f777-487f-4bb6-b40c-0eb6f3984e48",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });
@@ -313,6 +313,9 @@ namespace oSportApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SportId")
+                        .HasColumnType("int");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -325,6 +328,8 @@ namespace oSportApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SportId");
 
                     b.ToTable("Fields");
                 });
@@ -353,31 +358,6 @@ namespace oSportApp.Migrations
                     b.ToTable("Leagues");
                 });
 
-            modelBuilder.Entity("oSportApp.Models.LeagueReferee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OwnerLeagueId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RefereeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerLeagueId");
-
-                    b.HasIndex("RefereeId");
-
-                    b.ToTable("LeagueReferees");
-                });
-
             modelBuilder.Entity("oSportApp.Models.LeagueTeam", b =>
                 {
                     b.Property<int>("Id")
@@ -401,6 +381,70 @@ namespace oSportApp.Migrations
                     b.HasIndex("OwnerLeagueId");
 
                     b.ToTable("LeagueTeams");
+                });
+
+            modelBuilder.Entity("oSportApp.Models.Match", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AwayTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HomeTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamScore")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MatchDayId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RefereeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("HomeTeamId");
+
+                    b.HasIndex("MatchDayId");
+
+                    b.HasIndex("RefereeId");
+
+                    b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("oSportApp.Models.MatchDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MatchDays");
                 });
 
             modelBuilder.Entity("oSportApp.Models.Owner", b =>
@@ -615,9 +659,14 @@ namespace oSportApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SportId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("SportId");
 
                     b.ToTable("Referees");
                 });
@@ -661,9 +710,6 @@ namespace oSportApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AccountStatus")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -686,7 +732,7 @@ namespace oSportApp.Migrations
                     b.Property<bool>("Approved")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CoachTeamId")
+                    b.Property<int?>("CoachTeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("Goals")
@@ -695,7 +741,7 @@ namespace oSportApp.Migrations
                     b.Property<int>("KitNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
+                    b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<int>("PositionId")
@@ -785,7 +831,7 @@ namespace oSportApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("oSportApp.Models.League", b =>
+            modelBuilder.Entity("oSportApp.Models.Field", b =>
                 {
                     b.HasOne("oSportApp.Models.Sport", "Sport")
                         .WithMany()
@@ -794,17 +840,11 @@ namespace oSportApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("oSportApp.Models.LeagueReferee", b =>
+            modelBuilder.Entity("oSportApp.Models.League", b =>
                 {
-                    b.HasOne("oSportApp.Models.OwnerLeague", "OwnerLeague")
+                    b.HasOne("oSportApp.Models.Sport", "Sport")
                         .WithMany()
-                        .HasForeignKey("OwnerLeagueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("oSportApp.Models.Referee", "Referee")
-                        .WithMany()
-                        .HasForeignKey("RefereeId")
+                        .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -822,6 +862,29 @@ namespace oSportApp.Migrations
                         .HasForeignKey("OwnerLeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("oSportApp.Models.Match", b =>
+                {
+                    b.HasOne("oSportApp.Models.LeagueTeam", "AwayTeam")
+                        .WithMany()
+                        .HasForeignKey("AwayTeamId");
+
+                    b.HasOne("oSportApp.Models.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId");
+
+                    b.HasOne("oSportApp.Models.LeagueTeam", "HomeTeam")
+                        .WithMany()
+                        .HasForeignKey("HomeTeamId");
+
+                    b.HasOne("oSportApp.Models.MatchDay", "MatchDay")
+                        .WithMany()
+                        .HasForeignKey("MatchDayId");
+
+                    b.HasOne("oSportApp.Models.Referee", "Referee")
+                        .WithMany()
+                        .HasForeignKey("RefereeId");
                 });
 
             modelBuilder.Entity("oSportApp.Models.Owner", b =>
@@ -858,21 +921,23 @@ namespace oSportApp.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("oSportApp.Models.Sport", "Sport")
+                        .WithMany()
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("oSportApp.Models.TeamPlayer", b =>
                 {
                     b.HasOne("oSportApp.Models.CoachTeam", "CoachTeam")
                         .WithMany()
-                        .HasForeignKey("CoachTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoachTeamId");
 
                     b.HasOne("oSportApp.Models.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId");
 
                     b.HasOne("oSportApp.Models.Position", "Position")
                         .WithMany()

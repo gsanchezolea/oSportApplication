@@ -158,7 +158,6 @@ namespace oSportApp.Data
         public DbSet<Sport> Sports { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<OwnerLeague> OwnerLeagues { get; set; }
-        public DbSet<LeagueReferee> LeagueReferees { get; set; }
         public DbSet<Referee> Referees { get; set; }
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<Player> Players { get; set; }
@@ -168,5 +167,7 @@ namespace oSportApp.Data
         public DbSet<Field> Fields { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<LeagueTeam> LeagueTeams { get; set; }
+        public DbSet<MatchDay> MatchDays { get; set; }
+        public DbSet<Match> Matches { get; set; }
     }
 }

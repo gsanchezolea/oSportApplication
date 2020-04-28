@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace oSportApp.Controllers
         public async Task<IActionResult> Index( )
         {
            
-            //
+            
             return View();
         }
 
@@ -48,31 +49,25 @@ namespace oSportApp.Controllers
 
             return View(coachTeam);
         }
-
-        // GET: CoachTeams/Create
-        public IActionResult Create()
+       
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "Id", "FirstName");
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            return View();
-        }
-
-        // POST: CoachTeams/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CoachId,TeamId")] CoachTeam coachTeam)
-        {
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var coach = await _context.Coaches.FirstOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+            var coachTeam = new CoachTeam();
+            coachTeam.CoachId = coach.Id;
+            coachTeam.TeamId = id;
+            if (id == 0)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(coachTeam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CoachId"] = new SelectList(_context.Coaches, "Id", "FirstName", coachTeam.CoachId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", coachTeam.TeamId);
-            return View(coachTeam);
+                return RedirectToAction("Index", "Coaches");
+            }            
+            return View();
         }
 
         // GET: CoachTeams/Edit/5

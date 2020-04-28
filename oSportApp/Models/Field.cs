@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,10 @@ namespace oSportApp.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [ForeignKey("Sport")]
+        public int SportId { get; set; }
+        public Sport Sport { get; set; }
 
         [Required]
         [Display(Name = "Field Name")]
@@ -28,5 +33,6 @@ namespace oSportApp.Models
         [Required]
         [Display(Name = "Zip Code")]
         public int ZipCode { get; set; }
+
     }
 }

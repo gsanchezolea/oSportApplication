@@ -64,22 +64,11 @@ namespace oSportApp.Controllers
         public async Task<IActionResult> Create(League league)
         {
             if (ModelState.IsValid)
-            {
+            {            
                 _context.Add(league);
                 await _context.SaveChangesAsync();               
-                var dbLeague = await _context.Leagues.SingleOrDefaultAsync(a => a.Name == league.Name);
-                var dbLeagueId = dbLeague.Id;
-                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var owner = await _context.Owners.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
-                var ownerId = owner.Id;
-                var ownerLeague = new OwnerLeague()
-                {
-                    OwnerId = ownerId,
-                    LeagueId = dbLeagueId,
-                };
-                _context.Add(ownerLeague);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Owners");
+                var dbLeague = await _context.Leagues.SingleOrDefaultAsync(a => a.Name == league.Name);                 
+                return RedirectToAction("Create", "OwnerLeagues", new { id = dbLeague.Id});
             }
             ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", league.SportId);
             return View(league);

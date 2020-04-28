@@ -22,24 +22,21 @@ namespace oSportApp.ActionFilter
             {
                 if (_claimsPrincipal.IsInRole("Owner"))
                 {
-                    context.Result = new RedirectToActionResult("Index",
-                    "Owners", null);
+                    context.Result = new RedirectToActionResult("Index", "Owners", null);
                 }
-                if (_claimsPrincipal.IsInRole("Coach"))
+                else if (_claimsPrincipal.IsInRole("Coach"))
                 {
-                    context.Result = new RedirectToActionResult("Index",
-                    "Coaches", null);
+                    context.Result = new RedirectToActionResult("Index", "Coaches", null);
                 }
-                if (_claimsPrincipal.IsInRole("Player"))
+                else if (_claimsPrincipal.IsInRole("Player"))
                 {
-                    context.Result = new RedirectToActionResult("Index",
-                    "Players", null);
+                    context.Result = new RedirectToActionResult("Index", "Players", null);
                 }
-                if (_claimsPrincipal.IsInRole("Referee"))
+                else if (_claimsPrincipal.IsInRole("Referee"))
                 {
-                    context.Result = new RedirectToActionResult("Index",
-                    "Referees", null);
+                    context.Result = new RedirectToActionResult("Index", "Referees", null);
                 }
+               
             }
         }
         public void OnActionExecuted(ActionExecutedContext context)

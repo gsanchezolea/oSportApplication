@@ -13,11 +13,11 @@ namespace oSportApp.Models
         public int Id { get; set; }
 
         [ForeignKey("CoachTeam")]
-        public int CoachTeamId { get; set; }
+        public int? CoachTeamId { get; set; }
         public CoachTeam CoachTeam { get; set; }
 
         [ForeignKey("Player")]
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public Player Player { get; set; }
 
         [ForeignKey("Position")]

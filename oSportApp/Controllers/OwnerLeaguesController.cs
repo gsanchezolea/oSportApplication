@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -47,26 +48,23 @@ namespace oSportApp.Controllers
             return View(ownerLeague);
         }
 
-        // GET: OwnerLeagues/Create
-        public IActionResult Create()
+       
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "Name");
-            ViewData["OwnerId"] = new SelectList(_context.Owners, "Id", "FirstName");
-            return View();
-        }
-
-        // POST: OwnerLeagues/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OwnerId,LeagueId")] OwnerLeague ownerLeague)
-        {
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var owner = await _context.Owners.FirstOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+            var ownerLeague = new OwnerLeague();
+            ownerLeague.OwnerId = owner.Id;
+            ownerLeague.LeagueId = id;
+            if(id == 0)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(ownerLeague);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Owners");
             }
             ViewData["LeagueId"] = new SelectList(_context.Leagues, "Id", "Name", ownerLeague.LeagueId);
             ViewData["OwnerId"] = new SelectList(_context.Owners, "Id", "FirstName", ownerLeague.OwnerId);

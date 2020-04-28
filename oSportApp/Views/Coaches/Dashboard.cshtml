@@ -27,11 +27,7 @@
                         <tr>
                             <th>
                                 Player Name
-                            </th>
-                            <th>
-                                Approved?
-                            </th>
-                            <th></th>
+                            </th>                            
                         </tr>
                     </thead>
                     <tbody>
@@ -41,10 +37,6 @@
                                 <td>
                                     @item.Player.FirstName @item.Player.LastName
                                 </td>
-                                <td>
-                                    @item.Approved
-                                </td>
-                                <td></td>
                             </tr>
                         }
                     </tbody>
@@ -76,7 +68,9 @@
                                 <td>
                                     @item.Approved
                                 </td>
-                                <td></td>
+                                <td>
+                                    <button type="button" onclick="location.href='@Url.Action("Approve", "TeamPlayers", new { id = item.Id})'" class="btn btn-primary">Approve</button>
+                                </td>
                             </tr>
                         }
                     </tbody>

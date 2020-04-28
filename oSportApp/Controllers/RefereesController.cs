@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,6 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    
     public class RefereesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -40,6 +38,7 @@ namespace oSportApp.Controllers
 
             var referee = await _context.Referees
                 .Include(r => r.IdentityUser)
+                .Include(r => r.Sport)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (referee == null)
             {
@@ -53,12 +52,14 @@ namespace oSportApp.Controllers
         public IActionResult Create()
         {
             var referee = new Referee();
+            var listOfSports = _context.Sports.ToList();
+            ViewBag.Sports = new SelectList(listOfSports, "Id", "Name");
             return View(referee);
         }
 
         // POST: Referees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Referee referee)
@@ -72,6 +73,7 @@ namespace oSportApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", referee.IdentityUserId);
+            ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", referee.SportId);
             return View(referee);
         }
 
@@ -89,15 +91,16 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", referee.IdentityUserId);
+            ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", referee.SportId);
             return View(referee);
         }
 
         // POST: Referees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Referee referee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,SportId,FirstName,LastName,PhoneNumber")] Referee referee)
         {
             if (id != referee.Id)
             {
@@ -125,6 +128,7 @@ namespace oSportApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", referee.IdentityUserId);
+            ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", referee.SportId);
             return View(referee);
         }
 
@@ -138,6 +142,7 @@ namespace oSportApp.Controllers
 
             var referee = await _context.Referees
                 .Include(r => r.IdentityUser)
+                .Include(r => r.Sport)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (referee == null)
             {

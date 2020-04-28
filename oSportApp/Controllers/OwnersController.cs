@@ -12,7 +12,8 @@ using oSportApp.Models;
 
 namespace oSportApp.Controllers
 {
-    
+    [Authorize(Roles = "Owner")]
+
     public class OwnersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -167,9 +168,17 @@ namespace oSportApp.Controllers
             return _context.Owners.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Dashboard(int id)
+        public async Task<IActionResult> Dashboard(int id) //ownerLeague Id being passed in
         {
-            var league = await _context.OwnerLeagues.Include(a => a.League).SingleOrDefaultAsync(a => a.Id == id);
+            var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var owner = await _context.Owners.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+
+            var league = await _context.OwnerLeagues
+                .Include(a => a.Owner)
+                .Include(a => a.League)
+                .ThenInclude(a => a.Sport)
+                .Where(a => a.Id == id)
+                .SingleOrDefaultAsync(a => a.OwnerId == owner.Id);
 
             //Approved Teams
             var approvedTeams = await _context.LeagueTeams
@@ -185,23 +194,15 @@ namespace oSportApp.Controllers
                 .ToListAsync();
             ViewBag.PendingTeams = pendingTeams;
 
-            //Approved Referees
-            var approvedReferees = await _context.LeagueReferees
-                .Include(a => a.Referee)
-                .Where(a => a.OwnerLeagueId == league.Id && a.Approved == true)
+            //List of fields of the same Sport type
+            var listOfFields = await _context.Fields
+                .Where(a => a.SportId == league.League.SportId)
                 .ToListAsync();
-            ViewBag.ApprovedReferees = approvedReferees;
 
-            //Pending Approval
-            var pendingReferees = await _context.LeagueReferees
-                .Include(a => a.Referee)
-                .Where(a => a.OwnerLeagueId == league.Id && a.Approved == false)
-                .ToListAsync();
-            ViewBag.PendingReferees = pendingReferees;
+            ViewBag.Fields = listOfFields;
 
-            ////Matches
-            //var listOfMatches = await _context.Matches.Include(a => a.HomeTeam).Include(a => a.AwayTeam).Where(a => a.HomeTeam.OwnerLeague.OwnerId == league.Id).ToListAsync();
-            //ViewBag.Matches = listOfMatches;
+
+
 
             
             return View(league);

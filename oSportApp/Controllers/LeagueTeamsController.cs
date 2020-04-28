@@ -61,13 +61,13 @@ namespace oSportApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LeagueTeam leagueTeam)
+        public async Task<IActionResult> Create([Bind("CoachTeamId,OwnerLeagueId")]LeagueTeam leagueTeam)
         {
             if (ModelState.IsValid)
-            {
+            {             
                 _context.Add(leagueTeam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Owners");
             }
             ViewData["CoachTeamId"] = new SelectList(_context.CoachTeams, "Id", "Id", leagueTeam.CoachTeamId);
             ViewData["OwnerLeagueId"] = new SelectList(_context.OwnerLeagues, "Id", "Id", leagueTeam.OwnerLeagueId);

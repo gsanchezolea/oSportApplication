@@ -17,6 +17,10 @@ namespace oSportApp.Models
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
 
+        [ForeignKey("Sport")]
+        public int SportId { get; set; }
+        public Sport Sport { get; set; }
+
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }

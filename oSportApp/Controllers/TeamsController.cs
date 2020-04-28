@@ -61,20 +61,9 @@ namespace oSportApp.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(team);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();  
                 var dbTeam = await _context.Teams.SingleOrDefaultAsync(a => a.Name == team.Name);
-                var dbTeamId = dbTeam.Id;
-                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var coach = await _context.Coaches.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
-                var coachId = coach.Id;
-                var coachTeam = new CoachTeam()
-                {
-                    CoachId = coachId,
-                    TeamId = coachId,
-                };
-                _context.Add(coachTeam);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Coaches");
+                return RedirectToAction("Create", "CoachTeams", new { id = dbTeam.Id });
             }
             return View(team);
         }

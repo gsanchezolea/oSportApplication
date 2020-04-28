@@ -6,24 +6,44 @@
 }
 
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="col-lg-12">
-                <h4>@Model.FirstName @Model.LastName</h4>
-            </div>
-            <div class="col-lg-12">
-                <p>Goals :</p>
-            </div>
-            <div class="col-lg-12">
-                <p>Kit #: :</p>
-            </div>
-            <div class="col-lg-12">
-                <p>Player Position :</p>
-            </div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="col-lg-12">
+            <h4>@Model.FirstName @Model.LastName</h4>
+        </div>        
+    </div>
+    <div class="col-lg-6">
+        <div class="col-lg-12">
+            <h4>Teams</h4>
         </div>
-        <div class="col-lg-6">
-            <h4>Matches</h4>
+        <div class="col-lg-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Team Name
+                        </th>
+                        <th>
+                            <button type="button" onclick="location.href='@Url.Action("Create","TeamPlayers", new { id = Model.Id})'" class="btn btn-primary">Join Team</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Teams)
+                    {
+                        <tr>
+                            <td>
+                                @item.CoachTeam.Team.Name
+                            </td>
+                            <td>
+                                <button type="button" onclick="location.href='@Url.Action("Dashboard","Players", new { id = item.Id})'" class="btn btn-primary">Dashboard</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
 

@@ -47,20 +47,16 @@ namespace oSportApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fields",
+                name: "MatchDays",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    StreetAddress = table.Column<string>(nullable: false),
-                    City = table.Column<string>(nullable: false),
-                    State = table.Column<string>(nullable: false),
-                    ZipCode = table.Column<int>(nullable: false)
+                    Day = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fields", x => x.Id);
+                    table.PrimaryKey("PK_MatchDays", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,8 +93,7 @@ namespace oSportApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false),
-                    AccountStatus = table.Column<bool>(nullable: false)
+                    Capacity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,25 +273,27 @@ namespace oSportApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Referees",
+                name: "Fields",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdentityUserId = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    PhoneNumber = table.Column<string>(nullable: false)
+                    SportId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    StreetAddress = table.Column<string>(nullable: false),
+                    City = table.Column<string>(nullable: false),
+                    State = table.Column<string>(nullable: false),
+                    ZipCode = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Referees", x => x.Id);
+                    table.PrimaryKey("PK_Fields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Referees_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Fields_Sports_SportId",
+                        column: x => x.SportId,
+                        principalTable: "Sports",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,6 +311,35 @@ namespace oSportApp.Migrations
                     table.PrimaryKey("PK_Leagues", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Leagues_Sports_SportId",
+                        column: x => x.SportId,
+                        principalTable: "Sports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Referees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdentityUserId = table.Column<string>(nullable: true),
+                    SportId = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Referees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Referees_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Referees_Sports_SportId",
                         column: x => x.SportId,
                         principalTable: "Sports",
                         principalColumn: "Id",
@@ -378,8 +404,8 @@ namespace oSportApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CoachTeamId = table.Column<int>(nullable: false),
-                    PlayerId = table.Column<int>(nullable: false),
+                    CoachTeamId = table.Column<int>(nullable: true),
+                    PlayerId = table.Column<int>(nullable: true),
                     PositionId = table.Column<int>(nullable: false),
                     Goals = table.Column<int>(nullable: false),
                     KitNumber = table.Column<int>(nullable: false),
@@ -393,44 +419,17 @@ namespace oSportApp.Migrations
                         column: x => x.CoachTeamId,
                         principalTable: "CoachTeams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TeamPlayers_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TeamPlayers_Positions_PositionId",
                         column: x => x.PositionId,
                         principalTable: "Positions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeagueReferees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OwnerLeagueId = table.Column<int>(nullable: false),
-                    RefereeId = table.Column<int>(nullable: false),
-                    Approved = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeagueReferees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LeagueReferees_OwnerLeagues_OwnerLeagueId",
-                        column: x => x.OwnerLeagueId,
-                        principalTable: "OwnerLeagues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LeagueReferees_Referees_RefereeId",
-                        column: x => x.RefereeId,
-                        principalTable: "Referees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -462,15 +461,66 @@ namespace oSportApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HomeTeamId = table.Column<int>(nullable: true),
+                    AwayTeamId = table.Column<int>(nullable: true),
+                    RefereeId = table.Column<int>(nullable: true),
+                    FieldId = table.Column<int>(nullable: true),
+                    MatchDayId = table.Column<int>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    HomeTeamScore = table.Column<int>(nullable: false),
+                    AwayTeamScore = table.Column<int>(nullable: false),
+                    Completed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Matches_LeagueTeams_AwayTeamId",
+                        column: x => x.AwayTeamId,
+                        principalTable: "LeagueTeams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_LeagueTeams_HomeTeamId",
+                        column: x => x.HomeTeamId,
+                        principalTable: "LeagueTeams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_MatchDays_MatchDayId",
+                        column: x => x.MatchDayId,
+                        principalTable: "MatchDays",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_Referees_RefereeId",
+                        column: x => x.RefereeId,
+                        principalTable: "Referees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ce83c51c-c0c5-45a7-a242-31f04b084cba", "2ae1b69b-6768-4843-93eb-06e00359c74a", "Owner", "OWNER" },
-                    { "22b9f485-1291-48a5-b23a-fb21296f186e", "6e3d5d38-7175-4e69-a0e6-fcbe0faa3777", "Coach", "COACH" },
-                    { "a1ce91f9-4d13-46f6-9a27-de3549559483", "8d8ac083-bd09-4e2f-a35f-1cb504a1bf72", "Referee", "REFEREE" },
-                    { "0a3bee17-2963-4f39-b2a8-9b8aabd8a936", "6735c30d-f96d-43bd-9855-393fea387ea8", "Player", "PLAYER" }
+                    { "cb5d8bce-9146-42bc-ba68-3b9fbd850334", "e6818dce-0dad-4f69-9d66-d8da7faf4eaa", "Owner", "OWNER" },
+                    { "674c50b2-6916-4b7e-9d1b-c6d8fb5e62ab", "b6bf18f5-f343-4ec5-871c-ee6b24c36d76", "Coach", "COACH" },
+                    { "a41612e9-406b-4d5b-9157-4fa50b7e6a4f", "0746728e-bfc7-49cf-ac07-412b050cf3c9", "Referee", "REFEREE" },
+                    { "d65b81dd-c2c0-4015-b576-e6b923e43f9d", "d6b5f777-487f-4bb6-b40c-0eb6f3984e48", "Player", "PLAYER" }
                 });
 
             migrationBuilder.InsertData(
@@ -560,14 +610,9 @@ namespace oSportApp.Migrations
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeagueReferees_OwnerLeagueId",
-                table: "LeagueReferees",
-                column: "OwnerLeagueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeagueReferees_RefereeId",
-                table: "LeagueReferees",
-                column: "RefereeId");
+                name: "IX_Fields_SportId",
+                table: "Fields",
+                column: "SportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Leagues_SportId",
@@ -583,6 +628,31 @@ namespace oSportApp.Migrations
                 name: "IX_LeagueTeams_OwnerLeagueId",
                 table: "LeagueTeams",
                 column: "OwnerLeagueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_AwayTeamId",
+                table: "Matches",
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_FieldId",
+                table: "Matches",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_HomeTeamId",
+                table: "Matches",
+                column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_MatchDayId",
+                table: "Matches",
+                column: "MatchDayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_RefereeId",
+                table: "Matches",
+                column: "RefereeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OwnerLeagues_LeagueId",
@@ -608,6 +678,11 @@ namespace oSportApp.Migrations
                 name: "IX_Referees_IdentityUserId",
                 table: "Referees",
                 column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Referees_SportId",
+                table: "Referees",
+                column: "SportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamPlayers_CoachTeamId",
@@ -643,13 +718,7 @@ namespace oSportApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Fields");
-
-            migrationBuilder.DropTable(
-                name: "LeagueReferees");
-
-            migrationBuilder.DropTable(
-                name: "LeagueTeams");
+                name: "Matches");
 
             migrationBuilder.DropTable(
                 name: "TeamPlayers");
@@ -658,13 +727,16 @@ namespace oSportApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "LeagueTeams");
+
+            migrationBuilder.DropTable(
+                name: "Fields");
+
+            migrationBuilder.DropTable(
+                name: "MatchDays");
+
+            migrationBuilder.DropTable(
                 name: "Referees");
-
-            migrationBuilder.DropTable(
-                name: "OwnerLeagues");
-
-            migrationBuilder.DropTable(
-                name: "CoachTeams");
 
             migrationBuilder.DropTable(
                 name: "Players");
@@ -673,16 +745,22 @@ namespace oSportApp.Migrations
                 name: "Positions");
 
             migrationBuilder.DropTable(
-                name: "Leagues");
+                name: "CoachTeams");
 
             migrationBuilder.DropTable(
-                name: "Owners");
+                name: "OwnerLeagues");
 
             migrationBuilder.DropTable(
                 name: "Coaches");
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Leagues");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
 
             migrationBuilder.DropTable(
                 name: "Sports");

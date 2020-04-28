@@ -1,0 +1,63 @@
+﻿@model oSportApp.Models.TeamPlayer
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Dashboard</h1>
+
+<div class="row">
+    <div class="col-lg-6">
+        <h1>@Model.Player.FirstName @Model.Player.LastName</h1>
+        <br />
+        <hr />
+        <h3>Team:</h3>  <h5>@Model.CoachTeam.Team.Name</h5>
+        <br />
+        <h3>Kit:</h3>   <h5>#@Model.KitNumber</h5>
+        <br />
+        <h3>Playing Position:</h3>  <h5>@Model.Position.Name</h5> 
+        <br />
+        <h3>Goals Scored:</h3>  <h5>@Model.Goals</h5>
+    </div>
+    <div class="col-lg-6">
+        <h1>Roster</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Player 
+                    </th>
+                    <th>
+                        Playing Position
+                    </th>
+                    <th>
+                        Kit #
+                    </th>
+                    <th>
+                        Goals Scored
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.Players)
+                {
+                <tr>
+                    <td>
+                        @item.CoachTeam.Player.FirstName @item.CoachTeam.Player.LastName
+                    </td>
+                    <td>
+                        @item.Position.Name
+                    </td>
+                    <td>
+                        @item.KitNumber
+                    </td>
+                    <td>
+                        @item.Goals
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

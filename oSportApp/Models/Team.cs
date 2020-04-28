@@ -17,9 +17,5 @@ namespace oSportApp.Models
 
         [Required]
         public int Capacity { get; set; }
-
-        [Display(Name = "Account Status")]
-        public bool AccountStatus { get; set; }
-
     }
 }
