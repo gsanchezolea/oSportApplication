@@ -167,7 +167,6 @@ namespace oSportApp.Data
         public DbSet<Field> Fields { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<LeagueTeam> LeagueTeams { get; set; }
-        public DbSet<MatchDay> MatchDays { get; set; }
         public DbSet<Match> Matches { get; set; }
     }
 }

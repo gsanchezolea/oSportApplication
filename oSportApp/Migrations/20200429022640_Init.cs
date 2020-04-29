@@ -47,19 +47,6 @@ namespace oSportApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MatchDays",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Day = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MatchDays", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Positions",
                 columns: table => new
                 {
@@ -471,7 +458,6 @@ namespace oSportApp.Migrations
                     AwayTeamId = table.Column<int>(nullable: true),
                     RefereeId = table.Column<int>(nullable: true),
                     FieldId = table.Column<int>(nullable: true),
-                    MatchDayId = table.Column<int>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     HomeTeamScore = table.Column<int>(nullable: false),
                     AwayTeamScore = table.Column<int>(nullable: false),
@@ -499,12 +485,6 @@ namespace oSportApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Matches_MatchDays_MatchDayId",
-                        column: x => x.MatchDayId,
-                        principalTable: "MatchDays",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Matches_Referees_RefereeId",
                         column: x => x.RefereeId,
                         principalTable: "Referees",
@@ -517,10 +497,10 @@ namespace oSportApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "cb5d8bce-9146-42bc-ba68-3b9fbd850334", "e6818dce-0dad-4f69-9d66-d8da7faf4eaa", "Owner", "OWNER" },
-                    { "674c50b2-6916-4b7e-9d1b-c6d8fb5e62ab", "b6bf18f5-f343-4ec5-871c-ee6b24c36d76", "Coach", "COACH" },
-                    { "a41612e9-406b-4d5b-9157-4fa50b7e6a4f", "0746728e-bfc7-49cf-ac07-412b050cf3c9", "Referee", "REFEREE" },
-                    { "d65b81dd-c2c0-4015-b576-e6b923e43f9d", "d6b5f777-487f-4bb6-b40c-0eb6f3984e48", "Player", "PLAYER" }
+                    { "edae3063-2dda-46ea-994e-6a442d86b1f1", "5d9b9443-c8fd-4e95-bea5-4d71ebddb49e", "Owner", "OWNER" },
+                    { "b1e884d3-5ba7-48e7-9cf3-55cddb2c489d", "88ad4ada-5ab5-4202-9d83-4a55397991c5", "Coach", "COACH" },
+                    { "c0575eae-566c-4904-a55b-08cb8710e29c", "1cc27df6-7739-4ff5-b5e3-b218689b0ce9", "Referee", "REFEREE" },
+                    { "baca276d-e5cd-4c68-a74a-851f4639d40b", "01ba7f37-5cb0-43c9-a389-75ee5f121552", "Player", "PLAYER" }
                 });
 
             migrationBuilder.InsertData(
@@ -645,11 +625,6 @@ namespace oSportApp.Migrations
                 column: "HomeTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_MatchDayId",
-                table: "Matches",
-                column: "MatchDayId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Matches_RefereeId",
                 table: "Matches",
                 column: "RefereeId");
@@ -731,9 +706,6 @@ namespace oSportApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Fields");
-
-            migrationBuilder.DropTable(
-                name: "MatchDays");
 
             migrationBuilder.DropTable(
                 name: "Referees");

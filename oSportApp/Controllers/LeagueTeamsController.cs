@@ -67,7 +67,7 @@ namespace oSportApp.Controllers
             {             
                 _context.Add(leagueTeam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Owners");
+                return RedirectToAction("Index", "Coaches");
             }
             ViewData["CoachTeamId"] = new SelectList(_context.CoachTeams, "Id", "Id", leagueTeam.CoachTeamId);
             ViewData["OwnerLeagueId"] = new SelectList(_context.OwnerLeagues, "Id", "Id", leagueTeam.OwnerLeagueId);
@@ -163,6 +163,19 @@ namespace oSportApp.Controllers
         private bool LeagueTeamExists(int id)
         {
             return _context.LeagueTeams.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> Approve(int id)
+        {
+            var leagueTeam = await _context.LeagueTeams.SingleOrDefaultAsync(a => a.Id == id);
+            if (leagueTeam.Approved)
+            {
+                return NotFound();
+            }
+            leagueTeam.Approved = true;
+            _context.Update(leagueTeam);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Owners");
         }
     }
 }

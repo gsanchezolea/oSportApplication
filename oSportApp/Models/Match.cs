@@ -28,10 +28,6 @@ namespace oSportApp.Models
         public int? FieldId { get; set; }
         public Field Field { get; set; }
 
-        [ForeignKey("MatchDay")]
-        public int? MatchDayId { get; set; }
-        public MatchDay MatchDay { get; set; }
-
         [Display(Name = "Match Date")]
         [Required]
         [DataType(DataType.Date)]

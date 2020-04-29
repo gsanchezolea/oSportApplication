@@ -10,7 +10,7 @@ using oSportApp.Data;
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200428021729_Init")]
+    [Migration("20200429022640_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,29 +50,29 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cb5d8bce-9146-42bc-ba68-3b9fbd850334",
-                            ConcurrencyStamp = "e6818dce-0dad-4f69-9d66-d8da7faf4eaa",
+                            Id = "edae3063-2dda-46ea-994e-6a442d86b1f1",
+                            ConcurrencyStamp = "5d9b9443-c8fd-4e95-bea5-4d71ebddb49e",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "674c50b2-6916-4b7e-9d1b-c6d8fb5e62ab",
-                            ConcurrencyStamp = "b6bf18f5-f343-4ec5-871c-ee6b24c36d76",
+                            Id = "b1e884d3-5ba7-48e7-9cf3-55cddb2c489d",
+                            ConcurrencyStamp = "88ad4ada-5ab5-4202-9d83-4a55397991c5",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "a41612e9-406b-4d5b-9157-4fa50b7e6a4f",
-                            ConcurrencyStamp = "0746728e-bfc7-49cf-ac07-412b050cf3c9",
+                            Id = "c0575eae-566c-4904-a55b-08cb8710e29c",
+                            ConcurrencyStamp = "1cc27df6-7739-4ff5-b5e3-b218689b0ce9",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "d65b81dd-c2c0-4015-b576-e6b923e43f9d",
-                            ConcurrencyStamp = "d6b5f777-487f-4bb6-b40c-0eb6f3984e48",
+                            Id = "baca276d-e5cd-4c68-a74a-851f4639d40b",
+                            ConcurrencyStamp = "01ba7f37-5cb0-43c9-a389-75ee5f121552",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });
@@ -411,9 +411,6 @@ namespace oSportApp.Migrations
                     b.Property<int>("HomeTeamScore")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MatchDayId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RefereeId")
                         .HasColumnType("int");
 
@@ -425,26 +422,9 @@ namespace oSportApp.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.HasIndex("MatchDayId");
-
                     b.HasIndex("RefereeId");
 
                     b.ToTable("Matches");
-                });
-
-            modelBuilder.Entity("oSportApp.Models.MatchDay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MatchDays");
                 });
 
             modelBuilder.Entity("oSportApp.Models.Owner", b =>
@@ -877,10 +857,6 @@ namespace oSportApp.Migrations
                     b.HasOne("oSportApp.Models.LeagueTeam", "HomeTeam")
                         .WithMany()
                         .HasForeignKey("HomeTeamId");
-
-                    b.HasOne("oSportApp.Models.MatchDay", "MatchDay")
-                        .WithMany()
-                        .HasForeignKey("MatchDayId");
 
                     b.HasOne("oSportApp.Models.Referee", "Referee")
                         .WithMany()

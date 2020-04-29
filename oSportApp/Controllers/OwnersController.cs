@@ -183,14 +183,16 @@ namespace oSportApp.Controllers
             //Approved Teams
             var approvedTeams = await _context.LeagueTeams
                 .Include(a => a.CoachTeam)
-                .Where(a => a.OwnerLeagueId == league.Id && a.Approved == true)
+                .ThenInclude(a => a.Team)
+                .Where(a => (a.OwnerLeagueId == league.Id) && (a.Approved == true))
                 .ToListAsync();
             ViewBag.ApprovedTeams = approvedTeams;
 
             //Pending Approval
             var pendingTeams = await _context.LeagueTeams
                 .Include(a => a.CoachTeam)
-                .Where(a => a.OwnerLeagueId == league.Id && a.Approved == false)
+                .ThenInclude(a => a.Team)
+                .Where(a => (a.OwnerLeagueId == league.Id) && (a.Approved == false))
                 .ToListAsync();
             ViewBag.PendingTeams = pendingTeams;
 
@@ -201,11 +203,17 @@ namespace oSportApp.Controllers
 
             ViewBag.Fields = listOfFields;
 
+            var listOfMatches = await _context.Matches
+                .Include(a => a.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => (a.HomeTeam.OwnerLeagueId == league.Id) && (a.AwayTeam.OwnerLeagueId == league.Id) && (a.Completed == false))
+                .ToListAsync();
 
+            ViewBag.Matches = listOfMatches;
 
-
-            
             return View(league);
         }
+        
     }
 }

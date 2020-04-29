@@ -185,7 +185,17 @@ namespace oSportApp.Controllers
               .ToListAsync();
             ViewBag.PendingPlayers = pendingPlayers;
 
-            //
+            var listOfLeagues = await _context.LeagueTeams
+                .Include(a => a.OwnerLeague)
+                .ThenInclude(a => a.League)
+                .Where(a => (a.CoachTeamId == team.Id) && (a.Approved == true))
+                .ToListAsync();
+
+            ViewBag.Leagues = listOfLeagues;
+
+
+            
+
             return View(team);
         }
     }
