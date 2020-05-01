@@ -92,7 +92,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-APIKeys.*
+*.API_Keys
 
 # Chutzpah Test files
 _Chutzpah*
