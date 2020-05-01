@@ -32,6 +32,7 @@ namespace oSportApp.Models
 
         [Required]
         [Display(Name = "Zip Code")]
+        [DataType(DataType.PostalCode)]
         public int ZipCode { get; set; }
 
     }

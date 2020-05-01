@@ -126,7 +126,7 @@
                                     @item.AwayTeam.CoachTeam.Team.Name                                  
                                 </td>
                                 <td>
-
+                                    <button type="button" onclick="location.href='@Url.Action("Details", "Matches", new { id = item.Id})'" class="btn btn-primary">Details</button>
                                 </td>
                             </tr>
                         }

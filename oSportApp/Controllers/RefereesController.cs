@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using oSportApp.Data;
 using oSportApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace oSportApp.Controllers
 {
+    [Authorize(Roles = "Referee")]
     public class RefereesController : Controller
     {
         private readonly ApplicationDbContext _context;

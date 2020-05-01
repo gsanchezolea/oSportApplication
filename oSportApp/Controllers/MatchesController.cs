@@ -36,8 +36,12 @@ namespace oSportApp.Controllers
 
             var match = await _context.Matches
                 .Include(m => m.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
                 .Include(m => m.Field)
                 .Include(m => m.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
                 .Include(m => m.Referee)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (match == null)

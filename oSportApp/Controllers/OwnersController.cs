@@ -13,7 +13,6 @@ using oSportApp.Models;
 namespace oSportApp.Controllers
 {
     [Authorize(Roles = "Owner")]
-
     public class OwnersController : Controller
     {
         private readonly ApplicationDbContext _context;

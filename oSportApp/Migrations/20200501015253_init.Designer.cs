@@ -10,8 +10,8 @@ using oSportApp.Data;
 namespace oSportApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200429022640_Init")]
-    partial class Init
+    [Migration("20200501015253_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,29 +50,36 @@ namespace oSportApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "edae3063-2dda-46ea-994e-6a442d86b1f1",
-                            ConcurrencyStamp = "5d9b9443-c8fd-4e95-bea5-4d71ebddb49e",
+                            Id = "f4f97718-0f42-4aa5-b31f-125e624d0950",
+                            ConcurrencyStamp = "bedf4cfe-e659-4c56-bae2-3d4172d9047e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "e4b9dddb-25d7-446e-9c8d-2be5dc3d37bb",
+                            ConcurrencyStamp = "55613c86-422b-47f0-b787-d64004c00df9",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "b1e884d3-5ba7-48e7-9cf3-55cddb2c489d",
-                            ConcurrencyStamp = "88ad4ada-5ab5-4202-9d83-4a55397991c5",
+                            Id = "763dbf05-d8fc-426d-9257-8e7a70d91dd7",
+                            ConcurrencyStamp = "ada89133-d71e-4f21-9687-0b9a43b6b1fd",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "c0575eae-566c-4904-a55b-08cb8710e29c",
-                            ConcurrencyStamp = "1cc27df6-7739-4ff5-b5e3-b218689b0ce9",
+                            Id = "8d612722-d2d1-46f8-baf5-ab6bab1d10b2",
+                            ConcurrencyStamp = "933129f9-fefa-42c3-abcb-181987abd33f",
                             Name = "Referee",
                             NormalizedName = "REFEREE"
                         },
                         new
                         {
-                            Id = "baca276d-e5cd-4c68-a74a-851f4639d40b",
-                            ConcurrencyStamp = "01ba7f37-5cb0-43c9-a389-75ee5f121552",
+                            Id = "c5c03b9d-7cc0-4c93-a4fe-1d2465462e33",
+                            ConcurrencyStamp = "598ae0c5-e100-4eb1-a5e4-5d96bdb7dac4",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         });

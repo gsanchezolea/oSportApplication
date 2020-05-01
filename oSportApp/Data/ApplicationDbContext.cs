@@ -19,27 +19,32 @@ namespace oSportApp.Data
             base.OnModelCreating(builder);
             builder.Entity<IdentityRole>()
             .HasData(
-            new IdentityRole
-            {
-                Name = "Owner",
-                NormalizedName = "OWNER",
-            },
-            new IdentityRole
-            {
-                Name = "Coach",
-                NormalizedName = "COACH",
-            },
-            new IdentityRole
-            {
-                Name = "Referee",
-                NormalizedName = "REFEREE",
-            },
-            new IdentityRole
-            {
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                },
+                new IdentityRole
+                {
+                    Name = "Owner",
+                    NormalizedName = "OWNER",
+                },
+                new IdentityRole
+                {
+                    Name = "Coach",
+                    NormalizedName = "COACH",
+                },
+                new IdentityRole
+                {
+                    Name = "Referee",
+                    NormalizedName = "REFEREE",
+                },
+                new IdentityRole
+                {
                 Name = "Player",
                 NormalizedName = "PLAYER",
-            }
-            );
+                }
+                );
             builder.Entity<Sport>()
                 .HasData(
                 new Sport
@@ -63,7 +68,7 @@ namespace oSportApp.Data
                 new Position
                 {
                     Id = 1,
-                    Name = "Goalkeeper", 
+                    Name = "Goalkeeper",
                     Abbreviation = "GK",
                 },
                 new Position
@@ -87,7 +92,7 @@ namespace oSportApp.Data
                 new Position
                 {
                     Id = 5,
-                    Name = "Sweeper", 
+                    Name = "Sweeper",
                     Abbreviation = "SW",
                 },
                 new Position
@@ -111,13 +116,13 @@ namespace oSportApp.Data
                 new Position
                 {
                     Id = 9,
-                    Name = "Striker", 
+                    Name = "Striker",
                     Abbreviation = "S",
                 },
                 new Position
                 {
                     Id = 10,
-                    Name = "Attacking Midfielder/Playmaker", 
+                    Name = "Attacking Midfielder/Playmaker",
                     Abbreviation = "AM",
                 },
                 new Position
@@ -128,7 +133,7 @@ namespace oSportApp.Data
                 },
                 new Position
                 {
-                    Id = 12, 
+                    Id = 12,
                     Name = "Center Forward",
                     Abbreviation = "CF",
                 },
@@ -141,13 +146,13 @@ namespace oSportApp.Data
                 new Position
                 {
                     Id = 14,
-                    Name = "Left Wingback", 
+                    Name = "Left Wingback",
                     Abbreviation = "LWB",
                 },
                 new Position
                 {
-                    Id = 15, 
-                    Name = "Right Wingback", 
+                    Id = 15,
+                    Name = "Right Wingback",
                     Abbreviation = "RWB",
                 }
                 );
