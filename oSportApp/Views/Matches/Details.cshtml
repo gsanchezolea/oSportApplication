@@ -8,15 +8,83 @@
 
 <style>
     #map {
-        height: 400px;
-        width: 400px;
+        height: 500px;
+        width: 1150px;
     }
 </style>
 
 <body onload="initialize()">
     <div class="row">
-        <div id="map"></div>
+        <div class="col-lg-12">
+            @Model.Date.Date
+        </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HomeTeam)
+                        </th>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AwayTeam)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.HomeTeam.CoachTeam.Team.Name)
+                        </td>
+                        <td>vs.</td>
+                        <td>
+                            @Html.DisplayFor(model => model.AwayTeam.CoachTeam.Team.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.HomeTeamScore)
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.DisplayFor(model => model.AwayTeamScore)
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Field)
+                        </th>                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.Field.Name)
+                        </td>                        
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-lg-12">
+            <div id="map"></div>
+        </div>
+    </div>
+
+
     <script>
 
         var geocoder;
@@ -25,7 +93,7 @@
             geocoder = new google.maps.Geocoder();
             var latlng = new google.maps.LatLng(43.0389, -87.9065);
             var mapOptions = {
-                zoom: 8,
+                zoom: 16,
                 center: latlng
             }
             map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -42,16 +110,20 @@
                     var marker = new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location
-                    });
+                    });                     
                 } else {
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
             });
         }
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {            infoWindow.setPosition(pos);            infoWindow.setContent(browserHasGeolocation ?                'Error: The Geolocation service failed.' :                'Error: Your browser doesn\'t support geolocation.');            infoWindow.open(map);        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=@API_KEYS.Google_API_Key" async defer></script>
-
-
 </body>

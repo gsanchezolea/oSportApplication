@@ -27,6 +27,18 @@ namespace oSportApp.Controllers
         {
             var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var referee = await _context.Referees.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+
+            var listOfMatches = await _context.Matches
+               .Include(a => a.HomeTeam)
+               .ThenInclude(a => a.CoachTeam)
+               .ThenInclude(a => a.Team)
+               .Include(a => a.AwayTeam)
+               .ThenInclude(a => a.CoachTeam)
+               .ThenInclude(a => a.Team)
+               .Where(a => a.Referee.Id == referee.Id)
+               .ToListAsync();
+
+            ViewBag.Matches = listOfMatches;
             return View(referee);
         }
 

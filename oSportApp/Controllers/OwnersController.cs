@@ -206,6 +206,9 @@ namespace oSportApp.Controllers
                 .Include(a => a.HomeTeam)
                 .ThenInclude(a => a.CoachTeam)
                 .ThenInclude(a => a.Team)
+                .Include(a => a.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
                 .Where(a => (a.HomeTeam.OwnerLeagueId == league.Id) && (a.AwayTeam.OwnerLeagueId == league.Id) && (a.Completed == false))
                 .ToListAsync();
 

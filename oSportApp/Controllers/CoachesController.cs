@@ -166,7 +166,7 @@ namespace oSportApp.Controllers
             return _context.Coaches.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Dashboard(int id)
+        public async Task<IActionResult> Dashboard(int id) // coach team id
         {
             var team = await _context.CoachTeams.Include(a => a.Team).SingleOrDefaultAsync(a => a.Id == id);
 
@@ -192,8 +192,19 @@ namespace oSportApp.Controllers
 
             ViewBag.Leagues = listOfLeagues;
 
+            var listOfMatches = await _context.Matches
+                .Include(a => a.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Include(a => a.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => (a.HomeTeam.CoachTeam.Id == team.Id) || (a.AwayTeam.CoachTeam.Id == team.Id) && (a.Completed == false))
+                .ToListAsync();
 
-            
+            ViewBag.Matches = listOfMatches;
+
+
 
             return View(team);
         }

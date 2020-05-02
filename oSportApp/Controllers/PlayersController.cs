@@ -190,14 +190,33 @@ namespace oSportApp.Controllers
                 .ThenInclude(a => a.Team)
                 .Include(a => a.Player)
                 .Include(a => a.Position)
-                .Where(a => a.Id == id).SingleOrDefaultAsync(a => a.PlayerId == player.Id);
+                .Where(a => a.Id == id).SingleOrDefaultAsync(a => a.Player.Id == player.Id);
 
             var listOfPlayers = await _context.TeamPlayers
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Coach)
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
                 .Include(a => a.Player)
+                .Include(a => a.Position)
                 .Where(a => (a.Id == id) && (a.Approved == true))
                 .ToListAsync();
 
             ViewBag.Players = listOfPlayers;
+
+            var listOfMatches = await _context.Matches
+                .Include(a => a.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Include(a => a.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => (a.HomeTeam.CoachTeam.Id == teamPlayer.CoachTeam.Id) || (a.AwayTeam.CoachTeam.Id == teamPlayer.CoachTeam.Id) && (a.Completed == false))
+                .ToListAsync();
+
+            ViewBag.Matches = listOfMatches;
+
+
             return View(teamPlayer);
         }
 
