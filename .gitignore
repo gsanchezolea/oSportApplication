@@ -92,7 +92,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-API_Keys*.
+
 
 # Chutzpah Test files
 _Chutzpah*
@@ -350,5 +350,3 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-#API KEYS
-API_KEYS.cs
