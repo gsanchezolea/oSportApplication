@@ -46,7 +46,9 @@
                                 <td>
                                     @item.Approved
                                 </td>
-                                <td>   </td>
+                                <td>
+                                    <button type="button" onclick="location.href='@Url.Action("Suspend", "LeagueTeams", new { id = item.Id})'" class="btn btn-danger">Suspend</button>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -127,6 +129,8 @@
                                 </td>
                                 <td>
                                     <button type="button" onclick="location.href='@Url.Action("Details", "Matches", new { id = item.Id})'" class="btn btn-primary">Details</button>
+                                    <button type="button" onclick="location.href='@Url.Action("Edit","Matches", new { id = item.Id})'" class="btn btn-primary">Edit</button>
+                                    <button type="button" onclick="location.href='@Url.Action("Delete","Matches", new { id = item.Id})'" class="btn btn-danger">X</button>
                                 </td>
                             </tr>
                         }
@@ -152,6 +156,7 @@
                             <th>
                                 Address
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,6 +175,10 @@
                                     @item.City, @item.State
                                     <br />
                                     @item.ZipCode
+                                </td>
+                                <td>
+                                    <button type="button" onclick="location.href='@Url.Action("Edit","Fields", new { id = item.Id})'" class="btn btn-primary">Edit</button>
+                                    <button type="button" onclick="location.href='@Url.Action("Delete","Fields", new { id = item.Id})'" class="btn btn-danger">X</button>
                                 </td>
                             </tr>
                         }

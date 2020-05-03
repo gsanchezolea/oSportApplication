@@ -177,5 +177,14 @@ namespace oSportApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Owners");
         }
+
+        public async Task<IActionResult> Suspend(int id)
+        {
+            var leagueTeam = await _context.LeagueTeams.SingleOrDefaultAsync(a => a.Id == id);         
+            leagueTeam.Approved = false;
+            _context.Update(leagueTeam);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Owners");
+        }
     }
 }

@@ -58,6 +58,10 @@ namespace oSportApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Team team)
         {
+            if(team.Capacity == 0)
+            {
+                return View(team);
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(team);
@@ -114,7 +118,7 @@ namespace oSportApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Coaches");
             }
             return View(team);
         }

@@ -15,23 +15,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="HomeTeamId" class="control-label"></label>
-                <select asp-for="HomeTeamId" class="form-control" asp-items="ViewBag.HomeTeamId"></select>
+                <label asp-for="HomeTeam" ></label>
+                <select asp-for="HomeTeamId" class="form-control" asp-items="ViewBag.Teams"></select>
                 <span asp-validation-for="HomeTeamId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AwayTeamId" class="control-label"></label>
-                <select asp-for="AwayTeamId" class="form-control" asp-items="ViewBag.AwayTeamId"></select>
+                <label asp-for="AwayTeam" ></label>
+                <select asp-for="AwayTeamId" class="form-control" asp-items="ViewBag.Teams"></select>
                 <span asp-validation-for="AwayTeamId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RefereeId" class="control-label"></label>
-                <select asp-for="RefereeId" class="form-control" asp-items="ViewBag.RefereeId"></select>
+                <label asp-for="Referee" ></label>
+                <select asp-for="RefereeId" class="form-control" asp-items="ViewBag.Referees"></select>
                 <span asp-validation-for="RefereeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FieldId" class="control-label"></label>
-                <select asp-for="FieldId" class="form-control" asp-items="ViewBag.FieldId"></select>
+                <label asp-for="Field" ></label>
+                <select asp-for="FieldId" class="form-control" asp-items="ViewBag.Fields"></select>
                 <span asp-validation-for="FieldId" class="text-danger"></span>
             </div>
             <div class="form-group">

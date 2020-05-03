@@ -179,11 +179,20 @@ namespace oSportApp.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             var teamPlayer = await _context.TeamPlayers.SingleOrDefaultAsync(a => a.Id == id);
-            if(teamPlayer.Approved)
+            if (teamPlayer.Approved)
             {
                 return NotFound();
             }
             teamPlayer.Approved = true;
+            _context.Update(teamPlayer);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Coaches");
+        }
+
+        public async Task<IActionResult> Suspend(int id)
+        {
+            var teamPlayer = await _context.TeamPlayers.SingleOrDefaultAsync(a => a.Id == id);           
+            teamPlayer.Approved = false;
             _context.Update(teamPlayer);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Coaches");

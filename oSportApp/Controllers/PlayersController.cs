@@ -108,7 +108,7 @@ namespace oSportApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Player player)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNumber")] Player player)
         {
             if (id != player.Id)
             {

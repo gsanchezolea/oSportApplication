@@ -79,7 +79,8 @@ namespace oSportApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", @field.SportId);
+            var sports = _context.Sports.ToList();
+            ViewBag.Sports = new SelectList(sports, "Id", "Name");
             return View(@field);
         }
 
@@ -113,7 +114,7 @@ namespace oSportApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Owners");
             }
             ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", @field.SportId);
             return View(@field);
@@ -122,7 +123,19 @@ namespace oSportApp.Controllers
         // GET: Fields/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @field = await _context.Fields
+                .Include(l => l.Sport)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (@field == null)
+            {
+                return NotFound();
+            }
+            return View(@field);
         }
 
         // POST: Fields/Delete/5

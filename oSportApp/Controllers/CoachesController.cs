@@ -100,18 +100,27 @@ namespace oSportApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,FirstName,LastName,PhoneNumber,AccountStatus")] Coach coach)
+        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,PhoneNumber,AccountStatus")] Coach coach)
         {
-            if (id != coach.Id)
-            {
-                return NotFound();
-            }
+            var dbCoach = await _context.Coaches.SingleOrDefaultAsync(a => a.Id == id);
 
+            if (dbCoach.FirstName != coach.FirstName)
+            {
+                dbCoach.FirstName = coach.FirstName;
+            }
+            if (dbCoach.LastName != coach.LastName)
+            {
+                dbCoach.LastName = coach.LastName;
+            }
+            if (dbCoach.PhoneNumber != coach.PhoneNumber)
+            {
+                dbCoach.PhoneNumber = coach.PhoneNumber;
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(coach);
+                    _context.Update(dbCoach);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

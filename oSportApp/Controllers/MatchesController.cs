@@ -90,15 +90,35 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
 
-            var match = await _context.Matches.FindAsync(id);
+            var match = await _context.Matches
+                .Include(a => a.HomeTeam).ThenInclude(a => a.CoachTeam).ThenInclude(a => a.Team)
+                .Include(a => a.AwayTeam).ThenInclude(a => a.CoachTeam).ThenInclude(a => a.Team)
+                .Include(a => a.Referee).ThenInclude(a => a.Sport)
+                .Include(a => a.Field).ThenInclude(a => a.Sport)
+                .SingleOrDefaultAsync(a => a.Id == id);
             if (match == null)
             {
                 return NotFound();
             }
-            ViewData["AwayTeamId"] = new SelectList(_context.LeagueTeams, "Id", "Id", match.AwayTeamId);
-            ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "City", match.FieldId);
-            ViewData["HomeTeamId"] = new SelectList(_context.LeagueTeams, "Id", "Id", match.HomeTeamId);
-            ViewData["RefereeId"] = new SelectList(_context.Referees, "Id", "FirstName", match.RefereeId);
+            var referees = _context.Referees
+                 .Include(a => a.Sport)
+                 .ToList();
+
+            ViewBag.Referees = new SelectList(referees, "Id", "FirstName");
+
+            var teams = _context.LeagueTeams
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => a.OwnerLeagueId == match.AwayTeam.OwnerLeagueId)
+                .ToList();
+
+            ViewBag.Teams = new SelectList(teams, "Id", "Team.Name");
+
+            var fields = _context.Fields
+                .Include(a => a.Sport)
+                .ToList();
+
+            ViewBag.Fields = new SelectList(fields, "Id", "Name");
             return View(match);
         }
 
@@ -107,7 +127,7 @@ namespace oSportApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,HomeTeamId,AwayTeamId,RefereeId,FieldId,MatchDayId,Date,HomeTeamScore,AwayTeamScore,Completed")] Match match)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,HomeTeamId,AwayTeamId,RefereeId,FieldId,Date,HomeTeamScore,AwayTeamScore,Completed")] Match match)
         {
             if (id != match.Id)
             {
@@ -202,6 +222,11 @@ namespace oSportApp.Controllers
                 .Where(a => (a.OwnerLeagueId == id) && (a.Approved == true))
                 .ToListAsync();
 
+            if(listOfLeagueTeams.Count != ownerLeague.League.Capacity)
+            {
+                return RedirectToAction("Index", "Owners");
+            };
+
             var listOfMatchesNow = await _context.Matches
                 .Where(a => (a.HomeTeam.OwnerLeagueId == ownerLeague.Id) && (a.AwayTeam.OwnerLeagueId == ownerLeague.Id))
                 .ToListAsync();
@@ -221,12 +246,21 @@ namespace oSportApp.Controllers
                 .Include(a => a.Sport)
                 .Where(a => a.SportId == ownerLeague.League.Sport.Id)
                 .ToListAsync();
+            if (listOfReferees.Count() == 0)
+            {
+                return RedirectToAction("Index", "Owners");
+            }
 
             var listOfFields = await _context.Fields
                 .Include(a => a.Sport)
                 .Where(a => a.SportId == ownerLeague.League.Sport.Id)
                 .ToListAsync();
             var random = new Random();
+
+            if(listOfFields.Count() == 0)
+            {
+                return RedirectToAction("Index", "Owners");
+            }
 
             DateTime currentDate = DateTime.Now;
             var date = currentDate.AddDays(7);
@@ -247,7 +281,6 @@ namespace oSportApp.Controllers
             var totalMatches = totalTeams / 2;
             List<Match> listOfMatches = new List<Match>();
             var totalMatchesAdded = listOfMatches.Count();
-
 
             int i;
             int j;
@@ -303,7 +336,7 @@ namespace oSportApp.Controllers
                             _context.Add(newMatch);
                             await _context.SaveChangesAsync();
                             totalMatchesAdded++;
-
+                            
 
                         }
                         else if (timeOutTrigger == totalMatches * 4)

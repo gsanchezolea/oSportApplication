@@ -63,6 +63,10 @@ namespace oSportApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(League league)
         {
+            if(league.Capacity == 0)
+            {
+                return View(league);
+            }
             if (ModelState.IsValid)
             {            
                 _context.Add(league);
@@ -87,7 +91,8 @@ namespace oSportApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", league.SportId);
+            var sports = _context.Sports.ToList();
+            ViewBag.Sports = new SelectList(sports, "Id", "Name");
             return View(league);
         }
 
@@ -121,7 +126,7 @@ namespace oSportApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Owners");
             }
             ViewData["SportId"] = new SelectList(_context.Sports, "Id", "Id", league.SportId);
             return View(league);
@@ -154,7 +159,7 @@ namespace oSportApp.Controllers
             var league = await _context.Leagues.FindAsync(id);
             _context.Leagues.Remove(league);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Owners");
         }
 
         private bool LeagueExists(int id)
@@ -162,6 +167,10 @@ namespace oSportApp.Controllers
             return _context.Leagues.Any(e => e.Id == id);
         }
 
-
+        public async Task<IActionResult> Standings(int id) //ownerleague id
+        {
+            var applicationDbContext = _context.Leagues.Include(l => l.Sport);
+            return View(await applicationDbContext.ToListAsync());
+        }
     }
 }
