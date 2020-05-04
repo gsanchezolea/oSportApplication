@@ -282,6 +282,7 @@ namespace oSportApp.Controllers
 
             DateTime currentDate = DateTime.Now;
             var date = currentDate.AddDays(7);
+           
 
 
             var evenOrOdd = totalTeams % 2;
@@ -354,6 +355,7 @@ namespace oSportApp.Controllers
                             _context.Add(newMatch);
                             await _context.SaveChangesAsync();
                             totalMatchesAdded++;
+                            
 
 
                         }

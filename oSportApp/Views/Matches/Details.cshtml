@@ -14,10 +14,7 @@
 </style>
 
 <body onload="initialize()">
-    <div class="row">
-        <div class="col-lg-12">
-            @Model.Date.Date
-        </div>
+    <div class="row">        
         <button type="button" onclick="location.href='@Url.Action("Notify","Matches", new { id = Model.Id})'" class="btn btn-warning">Send Notification</button>
     </div>
     <div class="row">
@@ -65,14 +62,27 @@
                     <tr>
                         <th>
                             @Html.DisplayNameFor(model => model.Field)
-                        </th>                       
+                        </th>   
+                        <th>
+                            
+                        </th>
+                        <th>@Html.DisplayNameFor(model => model.Date)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
                             @Html.DisplayFor(model => model.Field.Name)
-                        </td>                        
+                        </td>    
+                        <td>
+                            @Html.DisplayFor(model => model.Field.StreetAddress)
+                            @Html.DisplayFor(model => model.Field.City)
+                            @Html.DisplayFor(model => model.Field.State)
+                            @Html.DisplayFor(model => model.Field.ZipCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Date.Date)
+                        </td>
                     </tr>
 
                 </tbody>
