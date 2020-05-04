@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -101,21 +102,27 @@ namespace oSportApp.Controllers
                 return NotFound();
             }
             var referees = _context.Referees
-                 .Include(a => a.Sport)
                  .ToList();
 
             ViewBag.Referees = new SelectList(referees, "Id", "FirstName");
 
-            var teams = _context.LeagueTeams
+            var homeTeams = _context.LeagueTeams
+                .Include(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Where(a => a.OwnerLeagueId == match.HomeTeam.OwnerLeagueId)
+                .ToList();
+
+            ViewBag.HomeTeams = new SelectList(homeTeams, "Id", "CoachTeam.Team.Name");
+
+            var awayTeams = _context.LeagueTeams
                 .Include(a => a.CoachTeam)
                 .ThenInclude(a => a.Team)
                 .Where(a => a.OwnerLeagueId == match.AwayTeam.OwnerLeagueId)
                 .ToList();
 
-            ViewBag.Teams = new SelectList(teams, "Id", "Team.Name");
+            ViewBag.AwayTeams = new SelectList(awayTeams, "Id", "CoachTeam.Team.Name");
 
             var fields = _context.Fields
-                .Include(a => a.Sport)
                 .ToList();
 
             ViewBag.Fields = new SelectList(fields, "Id", "Name");
@@ -152,7 +159,18 @@ namespace oSportApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                var identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var owner = await _context.Owners.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+                if (owner != null)
+                {
+                    return RedirectToAction("Index", "Owners");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Referees");
+                }
+
             }
             ViewData["AwayTeamId"] = new SelectList(_context.LeagueTeams, "Id", "Id", match.AwayTeamId);
             ViewData["FieldId"] = new SelectList(_context.Fields, "Id", "City", match.FieldId);
@@ -222,7 +240,7 @@ namespace oSportApp.Controllers
                 .Where(a => (a.OwnerLeagueId == id) && (a.Approved == true))
                 .ToListAsync();
 
-            if(listOfLeagueTeams.Count != ownerLeague.League.Capacity)
+            if (listOfLeagueTeams.Count != ownerLeague.League.Capacity)
             {
                 return RedirectToAction("Index", "Owners");
             };
@@ -257,7 +275,7 @@ namespace oSportApp.Controllers
                 .ToListAsync();
             var random = new Random();
 
-            if(listOfFields.Count() == 0)
+            if (listOfFields.Count() == 0)
             {
                 return RedirectToAction("Index", "Owners");
             }
@@ -294,13 +312,13 @@ namespace oSportApp.Controllers
                 }
                 else
                 {
-                    i = random.Next(0, (listOfLeagueTeams.Count()-1));
-                    j = random.Next(0, (listOfLeagueTeams.Count()-1));
-                    r = random.Next(0, (listOfReferees.Count()-1));
-                    f = random.Next(0, (listOfFields.Count()-1));
-                    if(i == j)
+                    i = random.Next(0, (listOfLeagueTeams.Count() - 1));
+                    j = random.Next(0, (listOfLeagueTeams.Count() - 1));
+                    r = random.Next(0, (listOfReferees.Count() - 1));
+                    f = random.Next(0, (listOfFields.Count() - 1));
+                    if (i == j)
                     {
-                        if(i < (listOfLeagueTeams.Count()-1) && i >= 0)
+                        if (i < (listOfLeagueTeams.Count() - 1) && i >= 0)
                         {
                             i++;
                         }
@@ -336,7 +354,7 @@ namespace oSportApp.Controllers
                             _context.Add(newMatch);
                             await _context.SaveChangesAsync();
                             totalMatchesAdded++;
-                            
+
 
                         }
                         else if (timeOutTrigger == totalMatches * 4)
@@ -357,10 +375,37 @@ namespace oSportApp.Controllers
                             timeOutTrigger++;
                         }
                     }
-                    
+
                 }
 
             }
+
+            return RedirectToAction("Index", "Owners");
+        }
+
+        public async Task<IActionResult> Notify(int id) // match id
+        {
+
+            Twilio_Sms sms = new Twilio_Sms();
+
+            var match = await _context.Matches
+                .Include(a => a.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Coach)
+                .Include(a => a.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Coach)
+                .Include(a => a.Referee)
+                .Include(a => a.Field)
+                .Include(a => a.HomeTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .Include(a => a.AwayTeam)
+                .ThenInclude(a => a.CoachTeam)
+                .ThenInclude(a => a.Team)
+                .SingleOrDefaultAsync(a => a.Id == id);
+
+            sms.SendSms(match);
 
             return RedirectToAction("Index", "Owners");
         }

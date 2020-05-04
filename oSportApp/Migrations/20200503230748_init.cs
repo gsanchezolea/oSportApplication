@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace oSportApp.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -497,11 +497,11 @@ namespace oSportApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4d8b9027-0fff-473a-b7fc-5ac9745c6edb", "c887cad1-2a0d-4cbb-81cf-48a6bb08709a", "Admin", "ADMIN" },
-                    { "8ba78b90-c1fc-43c0-ba42-a2ba76c64c4a", "ccdfb01c-de46-4fc4-a539-b1738f9d69d7", "Owner", "OWNER" },
-                    { "b6c2e346-d903-42b1-a4ae-deed87d98aab", "03cc8cd3-b291-4bfc-90bb-b69c73163ff6", "Coach", "COACH" },
-                    { "64a55a4c-5c79-44e9-98a8-3a041f5b5458", "a40fb867-c327-48a3-9a4d-f8403a8e1ff2", "Referee", "REFEREE" },
-                    { "84e3bf06-ef7f-43c7-858b-615909b65c11", "62168ad2-be7c-43b8-9f40-3072e6286ba5", "Player", "PLAYER" }
+                    { "a1c5f0c3-62e2-4ecb-8bcf-2c340028e523", "c48471b4-a6bb-4531-b380-3189038233a7", "Admin", "ADMIN" },
+                    { "6ccba34d-ce7a-4ad6-85e5-dfd85de55752", "78ac90ca-7d71-4112-8de2-12296ab10bfb", "Owner", "OWNER" },
+                    { "c24fa8a7-e9c1-48b7-931b-be0bc94e3614", "4ddf9656-6c59-41d7-9fbc-400e8c046e18", "Coach", "COACH" },
+                    { "c986887e-d494-4fb5-ba9c-22b2125cd798", "ae0f05f6-ddb5-413c-8498-19bd3f290cae", "Referee", "REFEREE" },
+                    { "38404607-d2e7-4a9a-a8a2-65ceb8d1e58c", "683162cc-bbc9-47cb-87ea-1493fc1084fc", "Player", "PLAYER" }
                 });
 
             migrationBuilder.InsertData(
